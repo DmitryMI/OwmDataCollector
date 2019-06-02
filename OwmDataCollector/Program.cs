@@ -14,7 +14,7 @@ namespace OwmDataCollector
             Console.Write("Specify city name: ");
             string cityName = Console.ReadLine(); ;
 
-            WeatherGetter getter = new WeatherGetter();
+            WeatherGetter getter = new WeatherGetter(new JsonSerializerSimple(), new OwmApiHandlerSimple(), WeatherGetter.DefaultApiKey);
 
             Console.WriteLine("Getting data...");
             try
