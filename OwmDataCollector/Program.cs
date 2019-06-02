@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using OwmDataCollector.WeatherCollector;
 
@@ -21,12 +22,22 @@ namespace OwmDataCollector
             {
                 WeatherData data = getter.GetDataForCity(cityName);
 
-                Console.WriteLine("Temperature (С): " + (data.Temperature - 273.15).ToString("0.0"));
-                Console.WriteLine("Humidity (%): " + data.Humidity);
-                Console.WriteLine("Sunrise time: " + data.SunriseTime.ToShortTimeString());
-                Console.WriteLine("Sunset time: " + data.SunsetTime.ToShortTimeString());
-                Console.WriteLine("Time: " + data.Timestamp);
+                string text =
+                    "Temperature (C): " + (data.Temperature - 273.15).ToString("0.0") + "\t\n" +
+                    "Humidity (%): " + data.Humidity + "\t\n" +
+                    "Sunrise time: " + data.SunriseTime.ToShortTimeString() + "\t\n" +
+                    "Sunset time: " + data.SunsetTime.ToShortTimeString() + "\t\n" +
+                    "Time: " + data.Timestamp;
 
+                Console.WriteLine(text);
+
+                Console.WriteLine();
+                Console.WriteLine("Saving to file...");
+
+                //string fileName = Regex.Escape(DateTime.Now.ToShortDateString());
+                string fileName = DateTime.Now.ToShortDateString() + ".weather.txt";
+
+                FileSaver.SaveToFile(text, fileName);
             }
             catch (DataParsingException e)
             {
@@ -41,6 +52,7 @@ namespace OwmDataCollector
                 Console.WriteLine("The argument was wrong. Try to change your request.");
             }
 
+            Console.WriteLine("Press any key to exit...");
             Console.ReadKey();
         }
     }
